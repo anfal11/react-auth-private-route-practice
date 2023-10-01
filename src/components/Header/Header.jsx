@@ -16,6 +16,8 @@ export default function Navbar() {
       setActiveLink("Login");
     } else if (location.pathname === "/register") {
       setActiveLink("Register");
+    } else if (location.pathname === "/orders"){
+      setActiveLink("Orders");
     } else {
       setActiveLink(""); // No active link for other routes
     }
@@ -89,6 +91,16 @@ export default function Navbar() {
                   }`}
                 >
                   Register
+                </NavLink>
+              </li>
+              <li className="lg:mx-4">
+                <NavLink
+                  to="/orders"
+                  className={`text-gray-600  ${
+                    activeLink === "Orders" ? "border-b-4 border-red-600" : ""
+                  }`}
+                >
+                  Orders
                 </NavLink>
               </li>
             </ul>
