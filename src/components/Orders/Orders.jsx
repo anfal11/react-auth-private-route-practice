@@ -1,5 +1,5 @@
-
 const Orders = () => {
+    
     return (
         <div className="max-w-7xl mx-auto">
             <h1 className="font-bold text-3xl my-10"> Your personal order history </h1>
