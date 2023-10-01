@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { FcGoogle } from "react-icons/fc";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
@@ -17,24 +18,46 @@ const Login = () => {
     signInUser(email, password)
       .then((result) => {
         console.log(result.user);
+
         e.target.reset();
+        Swal.fire(
+          'Good job!',
+          'You are now logged in!',
+          'success'
+        )
         navigate("/");
       })
       .catch((error) => {
         console.log(error.message);
+        {
+          error.message &&
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "This email is not registered!",
+              footer: `<a href='/register'>Please register </a><span> or log in with Google.</span>`,
+            });
+        }
       });
   };
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
-    .then (result => {
+    .then(result => {
       console.log(result.user);
       navigate("/");
+      Swal.fire(
+        'Good job!',
+        'You are now logged in with google!',
+        'success'
+      )
     })
     .catch (error => {
       console.log(error.message);
     })
   }
+
+  
 
   return (
     <div>

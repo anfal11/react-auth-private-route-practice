@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
+import Swal from "sweetalert2";
 
 const Register = () => {
     const {createUser} = useContext(AuthContext);
@@ -16,9 +17,16 @@ const Register = () => {
         createUser(email, password)
         .then (result => {
           console.log(result.user);
+
         })
         .catch (error => {
             console.log(error.message);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'This email has already registered!',
+              footer: `<a href='/login'>Please log in </a><span> or create a new account.</span>`
+            })
         })
     }
 
