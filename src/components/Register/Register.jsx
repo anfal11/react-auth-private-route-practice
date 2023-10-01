@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthProvider";
 import Swal from "sweetalert2";
 
 const Register = () => {
-    const {createUser} = useContext(AuthContext);
+    const {createUser, emailVerification} = useContext(AuthContext);
     
     const handleRegister = (e) => {
         e.preventDefault();
@@ -17,7 +17,23 @@ const Register = () => {
         createUser(email, password)
         .then (result => {
           console.log(result.user);
-
+          Swal.fire(
+            'Good job!',
+            'Your account is created now!',
+            'success'
+          )
+          emailVerification ()
+          .then(() => {
+            Swal.fire(
+              'Good job!',
+              'Please check your email for verification!',
+              'success'
+            )
+          })
+          .catch (error => {
+            console.log(error.message);
+          })
+        
         })
         .catch (error => {
             console.log(error.message);

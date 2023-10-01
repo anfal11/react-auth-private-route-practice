@@ -1,13 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthProvider";
 import { FcGoogle } from "react-icons/fc";
 import Swal from "sweetalert2";
 
 const Login = () => {
-  const { signInUser, signInWithGoogle } = useContext(AuthContext);
+  const { signInUser, signInWithGoogle, passReset} = useContext(AuthContext);
   const navigate = useNavigate();
+  const emailRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +35,7 @@ const Login = () => {
             Swal.fire({
               icon: "error",
               title: "Oops...",
-              text: "This email is not registered!",
+              text: `check you email and password again!`,
               footer: `<a href='/register'>Please register </a><span> or log in with Google.</span>`,
             });
         }
@@ -55,10 +56,50 @@ const Login = () => {
     .catch (error => {
       console.log(error.message);
     })
+
   }
 
   
+const handleForgetPassword = () => {
+  const email = emailRef.current.value;
+  if (!email){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Email is required. Please enter your email address.',
+    });
+    return;
+  } else if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)){
+    email && 
+    passReset(email)
+    .then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Password Reset Email Sent',
+        text: 'A password reset email has been sent to your email address. Please check your inbox and follow the instructions to reset your password.',
+      });
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Password Reset Email Failed',
+        text: error.message,
+      });
+    });
+ 
+  }
 
+  else {
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Invalid email format! Please enter a valid email address.',
+    });
+  }
+
+
+
+}
   return (
     <div>
       <h1 className="text-4xl text-center font-extrabold mb-10">
@@ -73,6 +114,7 @@ const Login = () => {
                 Enter Your Email:
               </label>
               <input
+                ref={emailRef}
                 type="email"
                 name="email"
                 className="w-60 rounded-md py-2.5 px-3.5 text-gray-900 placeholder-black placeholder-opacity-75 bg-gray-100 transition focus:bg-gray-200 focus:outline-none mb-4"
@@ -93,7 +135,7 @@ const Login = () => {
               />
               <label className="mb-3 font-medium text-gray-700 mr-4 ml-4 flex justify-center">
                 Forget your password?{" "}
-                <a href="#" className="text-blue-500">
+                <a href="#" className="text-blue-500" onClick={handleForgetPassword}>
                   {" "}
                   Click here
                 </a>
