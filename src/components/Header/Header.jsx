@@ -93,7 +93,8 @@ export default function Navbar() {
                   Register
                 </NavLink>
               </li>
-              <li className="lg:mx-4">
+              {
+                user && <li className="lg:mx-4">
                 <NavLink
                   to="/orders"
                   className={`text-gray-600  ${
@@ -103,6 +104,7 @@ export default function Navbar() {
                   Orders
                 </NavLink>
               </li>
+              }
             </ul>
           </div>
           <div className="lg:flex-grow"></div>
