@@ -22,13 +22,21 @@ const Register = () => {
             'Your account is created now!',
             'success'
           )
-          emailVerification ()
+          emailVerification (email)
           .then(() => {
-            Swal.fire(
-              'Good job!',
-              'Please check your email for verification!',
-              'success'
-            )
+            if (result.user.emailVerified){
+              Swal.fire(
+                'Good job!',
+                'Please check your email for verification!',
+                'success'
+              )
+            } else {
+              Swal.fire(
+                'Good job!',
+                'Please verify your email!',
+                'success'
+              )
+            }
           })
           .catch (error => {
             console.log(error.message);
